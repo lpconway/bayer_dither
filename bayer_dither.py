@@ -180,8 +180,11 @@ def dither_image(path, n=2, output_path=None):
     dithered_image = np.zeros(image.shape)
     
     # Dither each layer in the image in turn
-    for layer in range(image.shape[2]):
-        dithered_image[:,:,layer] = image[:,:,layer] > threshold_map
+    if len(image.shape) > 2:
+        for layer in range(image.shape[2]):
+            dithered_image[:,:,layer] = image[:,:,layer] > threshold_map
+    else:
+        dithered_image[:,:] = image[:,:] > threshold_map
     
     if output_path:
         _save_image(dithered_image * 255, output_path)
